@@ -40,14 +40,30 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    printf("Listening for a connection...");
+    printf("Listening for a connection...\n");
 
     // 4. Accept a connection
 
-    client_fd = accept(server_fd, (struct sockaddr *)&client_addr, sizeof(client_addr));
+    client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &addr_len);
     if (client_fd < 0)
     {
         perror("Error accepting client connection");
         exit(EXIT_FAILURE);
     }
+
+    printf("Client is connected\n");
+
+    // 5. Receive and send
+    recv(client_fd, buffer, sizeof(buffer), 0);
+    printf("Received: %s\n", buffer);
+
+    const char *response = "Hello from server!";
+
+    send(client_fd, response, strlen(response), 0);
+
+    // 6. Cleanup
+    close(client_fd);
+    close(server_fd);
+
+    return 0;
 }

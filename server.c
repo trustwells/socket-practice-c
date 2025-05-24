@@ -33,7 +33,7 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    // 3. Listen
+    // 3. Listen, allow up to 5 connections in the queue
     if (listen(server_fd, 5) < 0)
     {
         perror("listen failed");
@@ -43,4 +43,11 @@ int main()
     printf("Listening for a connection...");
 
     // 4. Accept a connection
+
+    client_fd = accept(server_fd, (struct sockaddr *)&client_addr, sizeof(client_addr));
+    if (client_fd < 0)
+    {
+        perror("Error accepting client connection");
+        exit(EXIT_FAILURE);
+    }
 }
